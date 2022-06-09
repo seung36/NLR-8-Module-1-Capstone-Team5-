@@ -10,7 +10,16 @@ public class VendingMachineCLI {
 
 	private static final String MAIN_MENU_OPTION_DISPLAY_ITEMS = "Display Vending Machine Items";
 	private static final String MAIN_MENU_OPTION_PURCHASE = "Purchase";
-	private static final String[] MAIN_MENU_OPTIONS = { MAIN_MENU_OPTION_DISPLAY_ITEMS, MAIN_MENU_OPTION_PURCHASE };
+	private static final String MAIN_MENU_OPTION_EXIT = "Exit";
+	private static final String[] MAIN_MENU_OPTIONS = { MAIN_MENU_OPTION_DISPLAY_ITEMS, MAIN_MENU_OPTION_PURCHASE,MAIN_MENU_OPTION_EXIT };
+
+	private static final String SECOND_MENU_OPTION_FEED_MONEY = "Feed Money";
+	private static final String SECOND_MENU_OPTION_SELECT_PRODUCT = "Select Product";
+	private static final String SECOND_MENU_OPTION_FINISH_TRANSACTION = "Finish Transaction";
+	private static final String SECOND_MENU_OPTION_CURRENT_MONEY_PROVIDED = "Current Money Provided";
+	private static final String SECOND_MENU_OPTION_SALES_REPORT = "";
+	private static final String[] SECOND_MENU_OPTIONS = { SECOND_MENU_OPTION_FEED_MONEY, SECOND_MENU_OPTION_SELECT_PRODUCT, SECOND_MENU_OPTION_FINISH_TRANSACTION, SECOND_MENU_OPTION_CURRENT_MONEY_PROVIDED, SECOND_MENU_OPTION_SALES_REPORT }
+
 
 	private Menu menu;
 
@@ -41,6 +50,7 @@ public class VendingMachineCLI {
 					int index = 0;
 					for (Map.Entry<String, Product> map : inventory.getInventoryMap().entrySet()) {
 						Product pr = inventory.getInventoryMap().get(keys[index]);
+						//TODO fix decimals so 0 shows in the hundredths position
 						System.out.println(pr.getSlot() + " " + pr.getProductName() + " $" + pr.getPrice() + " Qty:" + (pr.getQuantity() == 0 ? "SOLD OUT" : pr.getQuantity()) );
 						index++;
 					}
@@ -51,7 +61,22 @@ public class VendingMachineCLI {
 
 			} else if (choice.equals(MAIN_MENU_OPTION_PURCHASE)) {
 				// do purchase
+				while (true) {
+					String secondChoice = (String) menu.getChoiceFromOptions(SECOND_MENU_OPTIONS);
+
+					if (secondChoice.equals(SECOND_MENU_OPTION_FEED_MONEY)) {
+						menu.feedmoney();
+					} else if (secondChoice.equals(SECOND_MENU_OPTION_SELECT_PRODUCT)) {
+						menu.purchase();
+					} else if (secondChoice.equals(SECOND_MENU_OPTION_FINISH_TRANSACTION)) {
+						menu.finish();
+						run();
+					} else if (secondChoice.equals(SECOND_MENU_OPTION_SALES_REPORT)) {
+						menu.generateSalesReport
+					}
+				}
 			}
+			else if (choice.equals(MAIN_MENU_OPTION_EXIT));
 		}
 	}
 

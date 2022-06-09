@@ -1,0 +1,35 @@
+package com.techelevator;
+
+import java.math.BigDecimal;
+import java.util.Scanner;
+
+public class Financial {
+    private double money = 0;
+    private double total = 0;
+    private Scanner in;
+
+    public Financial(double money) {
+        this.money = money;
+    }
+
+    public BigDecimal convertBD(double money) {
+        BigDecimal bd = new BigDecimal(money);
+        return bd;
+    }
+
+    public double amountDeposited() {
+        BigDecimal bigDecimal = new BigDecimal(total);
+        bigDecimal = convertBD(total);
+        total = bigDecimal.doubleValue();
+        return total;
+    }
+    public void feedMoney() {
+        total += money;
+        System.out.println("Feed Money");
+        String inputMoney = in.nextLine();
+        double money = Double.parseDouble(inputMoney);
+
+        System.out.println("Current Money Provided: $%,.2d");
+    }
+
+}
