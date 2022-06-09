@@ -17,9 +17,10 @@ public class VendingMachineCLI {
 	private static final String SECOND_MENU_OPTION_SELECT_PRODUCT = "Select Product";
 	private static final String SECOND_MENU_OPTION_FINISH_TRANSACTION = "Finish Transaction";
 	private static final String SECOND_MENU_OPTION_CURRENT_MONEY_PROVIDED = "Current Money Provided";
-	private static final String SECOND_MENU_OPTION_SALES_REPORT = "";
-	private static final String[] SECOND_MENU_OPTIONS = { SECOND_MENU_OPTION_FEED_MONEY, SECOND_MENU_OPTION_SELECT_PRODUCT, SECOND_MENU_OPTION_FINISH_TRANSACTION, SECOND_MENU_OPTION_CURRENT_MONEY_PROVIDED, SECOND_MENU_OPTION_SALES_REPORT }
+	private static final String SECOND_MENU_OPTION_SALES_REPORT = " ";
+	private static final String[] SECOND_MENU_OPTIONS = { SECOND_MENU_OPTION_FEED_MONEY, SECOND_MENU_OPTION_SELECT_PRODUCT, SECOND_MENU_OPTION_FINISH_TRANSACTION, SECOND_MENU_OPTION_SALES_REPORT };
 
+	private String amount = "0.00";
 
 	private Menu menu;
 
@@ -62,18 +63,25 @@ public class VendingMachineCLI {
 			} else if (choice.equals(MAIN_MENU_OPTION_PURCHASE)) {
 				// do purchase
 				while (true) {
+					System.out.println(SECOND_MENU_OPTION_CURRENT_MONEY_PROVIDED + " " + amount);
 					String secondChoice = (String) menu.getChoiceFromOptions(SECOND_MENU_OPTIONS);
 
 					if (secondChoice.equals(SECOND_MENU_OPTION_FEED_MONEY)) {
-						menu.feedmoney();
-					} else if (secondChoice.equals(SECOND_MENU_OPTION_SELECT_PRODUCT)) {
+						//menu.feedmoney();
+						System.out.println("Type the amount of money you want to feed in whole dollar amounts: ");
+						Scanner scanner = new Scanner(System.in);
+						if (scanner.hasNext()) {
+							amount = scanner.next();
+						}
+
+					}/* else if (secondChoice.equals(SECOND_MENU_OPTION_SELECT_PRODUCT)) {
 						menu.purchase();
 					} else if (secondChoice.equals(SECOND_MENU_OPTION_FINISH_TRANSACTION)) {
 						menu.finish();
 						run();
 					} else if (secondChoice.equals(SECOND_MENU_OPTION_SALES_REPORT)) {
 						menu.generateSalesReport
-					}
+					}*/
 				}
 			}
 			else if (choice.equals(MAIN_MENU_OPTION_EXIT));
