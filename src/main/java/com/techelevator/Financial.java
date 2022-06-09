@@ -8,6 +8,10 @@ public class Financial {
     private double total = 0;
     private Scanner in;
 
+    public void setTotal(double total) {
+        this.total = total;
+    }
+
     public Financial(double money) {
         this.money = money;
     }
@@ -23,13 +27,19 @@ public class Financial {
         total = bigDecimal.doubleValue();
         return total;
     }
-    public void feedMoney() {
+
+    public double totalMoney() {
+        double funds = money + total;
+        return funds;
+    }
+
+    public void feedMoney(double money) {
         total += money;
         System.out.println("Feed Money");
         String inputMoney = in.nextLine();
-        double money = Double.parseDouble(inputMoney);
-
+        double funds = Double.parseDouble(inputMoney);
         System.out.println("Current Money Provided: $%,.2d");
+        
     }
 
 }
