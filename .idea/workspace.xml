@@ -4,12 +4,26 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
+<<<<<<< HEAD
     <list default="true" id="bc356392-dce4-4aa2-afca-4f271be422fe" name="Changes" comment="" />
+=======
+    <list default="true" id="9d7f50a6-5ecb-4705-8276-de096f68561f" name="Changes" comment="" />
+>>>>>>> 635717fec876d0058802d7a427ada9a5ec1d069c
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+<<<<<<< HEAD
+=======
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+>>>>>>> 635717fec876d0058802d7a427ada9a5ec1d069c
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
@@ -20,7 +34,11 @@
       </MavenGeneralSettings>
     </option>
   </component>
+<<<<<<< HEAD
   <component name="ProjectId" id="2ALQRMrC6zj9IK0yuI3ORcJrh2j" />
+=======
+  <component name="ProjectId" id="2ALRgixRLFvw1caBKa1Y5ejW98o" />
+>>>>>>> 635717fec876d0058802d7a427ada9a5ec1d069c
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -33,11 +51,19 @@
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
+<<<<<<< HEAD
       <changelist id="bc356392-dce4-4aa2-afca-4f271be422fe" name="Changes" comment="" />
       <created>1654786377363</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1654786377363</updated>
+=======
+      <changelist id="9d7f50a6-5ecb-4705-8276-de096f68561f" name="Changes" comment="" />
+      <created>1654786992104</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1654786992104</updated>
+>>>>>>> 635717fec876d0058802d7a427ada9a5ec1d069c
     </task>
     <servers />
   </component>
