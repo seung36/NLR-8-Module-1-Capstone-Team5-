@@ -32,4 +32,9 @@ public class Inventory {
 
         return new Product(attributes[0], attributes[1], price, attributes[3], 5);
     }
+
+
+    public Map<String, Product> getInventoryMap() {
+        return inventoryMap;
+    }
 }
