@@ -185,7 +185,7 @@ public class VendingMachineCLI {
 								String value = String.valueOf(entry.getValue(data[4]));
 								writer.print(key + "|" + value + "\n");
 							}
-							writer.print("\n" +"**TOTAL SALES** " + String.format("$%,.2f", amount));
+							writer.print("\n" +"**TOTAL SALES** " + String.format("$", amount));
 							} catch (IOException ex) {
 								System.out.println("Exception");
 							}
