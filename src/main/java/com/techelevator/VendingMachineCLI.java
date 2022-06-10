@@ -3,6 +3,7 @@ package com.techelevator;
 import com.techelevator.view.Menu;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.math.BigDecimal;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -21,6 +22,7 @@ public class VendingMachineCLI {
 	private static final String[] SECOND_MENU_OPTIONS = { SECOND_MENU_OPTION_FEED_MONEY, SECOND_MENU_OPTION_SELECT_PRODUCT, SECOND_MENU_OPTION_FINISH_TRANSACTION, SECOND_MENU_OPTION_SALES_REPORT };
 
 	private String amount = "0.00";
+	Inventory inventory;
 
 	private Menu menu;
 
@@ -37,7 +39,7 @@ public class VendingMachineCLI {
 				File file = new File("vendingmachine.csv");
 				try {
 					Scanner scanner = new Scanner(file);
-					Inventory inventory = new Inventory();;
+					inventory = new Inventory();;
 					while (scanner.hasNextLine()) {
 						String line = scanner.nextLine();
 						String[] data = line.split("\\|");
@@ -46,6 +48,7 @@ public class VendingMachineCLI {
 						inventory.getInventoryMap().put(data[1], product);
 
 					}
+					scanner.close();
 					String[] keys = inventory.getInventoryMap().keySet().toArray(new String[0]);
 
 					int index = 0;
@@ -68,15 +71,53 @@ public class VendingMachineCLI {
 
 					if (secondChoice.equals(SECOND_MENU_OPTION_FEED_MONEY)) {
 						//menu.feedmoney();
-						System.out.println("Type the amount of money you want to feed in whole dollar amounts: ");
+						System.out.print("Type the amount of money you want to feed in whole dollar amounts: ");
 						Scanner scanner = new Scanner(System.in);
 						if (scanner.hasNext()) {
+							Double prevAmt = Double.valueOf(amount);
 							amount = scanner.next();
+							Double currAmt = Double.valueOf(amount);
+							currAmt = prevAmt + currAmt;
+							amount = String.valueOf(currAmt);
+						}
+						//scanner.close();
+
+					} if (secondChoice.equals(SECOND_MENU_OPTION_SELECT_PRODUCT)) {
+						//menu.purchase();
+						String[] keys = inventory.getInventoryMap().keySet().toArray(new String[0]);
+
+						int index = 0;
+						for (Map.Entry<String, Product> map : inventory.getInventoryMap().entrySet()) {
+							Product pr = inventory.getInventoryMap().get(keys[index]);
+							//TODO fix decimals so 0 shows in the hundredths position
+							System.out.println(pr.getSlot() + " " + pr.getProductName() + " $" + pr.getPrice() + " Qty:" + (pr.getQuantity() == 0 ? "SOLD OUT" : pr.getQuantity()) );
+							index++;
+						}
+						System.out.print("Type the slot number to dispense the item: ");
+						Scanner scanner = new Scanner(System.in);
+						if (scanner.hasNext()) {
+							String item = scanner.nextLine();
+
+							for (String key: keys) {
+
+								Product product = inventory.getInventoryMap().get(key);
+								String productSlot = product.getSlot();
+								if (productSlot.equals(item)) {
+									String productType = product.getProductType();
+									BigDecimal price = product.getPrice();
+									BigDecimal bdAmt = BigDecimal.valueOf(Double.valueOf(amount));
+									if (bdAmt.compareTo(price) >= 0) {
+										amount = bdAmt.subtract(price).toString();
+										System.out.println(productType + productType + productType);
+									} else {
+
+									}
+								}
+
+							}
 						}
 
-					}/* else if (secondChoice.equals(SECOND_MENU_OPTION_SELECT_PRODUCT)) {
-						menu.purchase();
-					} else if (secondChoice.equals(SECOND_MENU_OPTION_FINISH_TRANSACTION)) {
+					} /*else if (secondChoice.equals(SECOND_MENU_OPTION_FINISH_TRANSACTION)) {
 						menu.finish();
 						run();
 					} else if (secondChoice.equals(SECOND_MENU_OPTION_SALES_REPORT)) {
