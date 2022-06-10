@@ -3,7 +3,11 @@ package com.techelevator;
 import com.techelevator.view.Menu;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -29,6 +33,10 @@ public class VendingMachineCLI {
 	public VendingMachineCLI(Menu menu) {
 		this.menu = menu;
 	}
+
+	String pattern = "yyyy-MM-dd HH:mm:ss";
+	SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+	String date = simpleDateFormat.format(new Date());
 
 	public void run() {
 		while (true) {
@@ -165,9 +173,23 @@ public class VendingMachineCLI {
 						System.out.println(Financial.returnChange(amount));
 						amount = "0.00";
 						break;
-					}/* else if (secondChoice.equals(SECOND_MENU_OPTION_SALES_REPORT)) {
-						menu.generateSalesReport
-					}*/
+
+					} else if (secondChoice.equals(SECOND_MENU_OPTION_SALES_REPORT)) {
+							String filePath = date;
+							File salesReport = new File(filePath +"salesReport.txt");
+							try (PrintWriter writer = new PrintWriter(salesReport)) {
+								for (Map.Entry<String, Integer> entry : getInventoryMap().entryset()) {
+								String key = entry.getKey(data[1]);
+								String value = String.valueOf(entry.getValue(data[4]));
+								writer.print(key + "|" + value + "\n");
+							}
+							writer.print("\n" +"**TOTAL SALES** " + String.format("$%,.2f", amount));
+							} catch (IOException ex) {
+								System.out.println("Exception");
+							}
+						}
+
+					}
 				}
 			}
 			else if (choice.equals(MAIN_MENU_OPTION_EXIT));

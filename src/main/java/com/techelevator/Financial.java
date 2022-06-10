@@ -55,6 +55,10 @@ public class Financial {
        return "Change return: " + quarters + " quarters, " + dimes + " dimes, " + nickels + " nickels.";
        }
 
+       public void getSalesReport() {
+
+       }
+
 
    }
 
