@@ -97,23 +97,43 @@ public class VendingMachineCLI {
 						Scanner scanner = new Scanner(System.in);
 						if (scanner.hasNext()) {
 							String item = scanner.nextLine();
-
+							boolean isProductexist = false;
 							for (String key: keys) {
 
 								Product product = inventory.getInventoryMap().get(key);
 								String productSlot = product.getSlot();
 								if (productSlot.equals(item)) {
+									isProductexist = true;
 									String productType = product.getProductType();
 									BigDecimal price = product.getPrice();
 									BigDecimal bdAmt = BigDecimal.valueOf(Double.valueOf(amount));
 									if (bdAmt.compareTo(price) >= 0) {
 										amount = bdAmt.subtract(price).toString();
-										System.out.println(productType + productType + productType);
+										switch(productType) {
+											case "Chip":
+												System.out.println("Crunch Crunch, Crunch!");
+												break;
+											case "Gum":
+												System.out.println("Chew Chew, Pop!");
+												break;
+											case "Drink":
+												System.out.println("Cheers Glug, Glug!");
+												break;
+											case "Candy":
+												System.out.println("Munch Munch, Mmm-Good!");
+												break;
+											default:
+												;
+										}
+									product.decreaseQuantity();
 									} else {
 
 									}
 								}
 
+							}
+							if (isProductexist == false) {
+								System.out.println("Invalid Code!");
 							}
 						}
 
