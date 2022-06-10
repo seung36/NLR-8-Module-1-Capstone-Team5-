@@ -39,11 +39,11 @@ public class VendingMachineCLI {
 				File file = new File("vendingmachine.csv");
 				try {
 					Scanner scanner = new Scanner(file);
-					inventory = new Inventory();;
+					inventory = new Inventory();
 					while (scanner.hasNextLine()) {
 						String line = scanner.nextLine();
 						String[] data = line.split("\\|");
-						Product product = new Product(data[0], data[1], Double.valueOf(data[2]), data[3], 5);
+						Product product = new Product(data[0], data[1], Double.parseDouble(data[2]), data[3], 5);
 
 						inventory.getInventoryMap().put(data[1], product);
 
@@ -55,7 +55,7 @@ public class VendingMachineCLI {
 					for (Map.Entry<String, Product> map : inventory.getInventoryMap().entrySet()) {
 						Product pr = inventory.getInventoryMap().get(keys[index]);
 						//TODO fix decimals so 0 shows in the hundredths position
-						System.out.println(pr.getSlot() + " " + pr.getProductName() + " $" + pr.getPrice() + " Qty:" + (pr.getQuantity() == 0 ? "SOLD OUT" : pr.getQuantity()) );
+						System.out.println(pr.getSlot() + " " + pr.getProductName() + " $" + pr.getPrice() + " Qty: " + (pr.getQuantity() == 0 ? "SOLD OUT" : pr.getQuantity()) );
 						index++;
 					}
 				} catch (FileNotFoundException e) {
@@ -66,7 +66,7 @@ public class VendingMachineCLI {
 			} else if (choice.equals(MAIN_MENU_OPTION_PURCHASE)) {
 				// do purchase
 				while (true) {
-					System.out.println(SECOND_MENU_OPTION_CURRENT_MONEY_PROVIDED + " " + amount);
+					System.out.println(SECOND_MENU_OPTION_CURRENT_MONEY_PROVIDED + " $" + amount);
 					String secondChoice = (String) menu.getChoiceFromOptions(SECOND_MENU_OPTIONS);
 
 					if (secondChoice.equals(SECOND_MENU_OPTION_FEED_MONEY)) {
@@ -87,7 +87,7 @@ public class VendingMachineCLI {
 						String[] keys = inventory.getInventoryMap().keySet().toArray(new String[0]);
 
 						int index = 0;
-						for (Map.Entry<String, Product> map : inventory.getInventoryMap().entrySet()) {
+						for (Map.Entry<String, Product> mapr : inventory.getInventoryMap().entrySet()) {
 							Product pr = inventory.getInventoryMap().get(keys[index]);
 							//TODO fix decimals so 0 shows in the hundredths position
 							System.out.println(pr.getSlot() + " " + pr.getProductName() + " $" + pr.getPrice() + " Qty:" + (pr.getQuantity() == 0 ? "SOLD OUT" : pr.getQuantity()) );
@@ -97,16 +97,16 @@ public class VendingMachineCLI {
 						Scanner scanner = new Scanner(System.in);
 						if (scanner.hasNext()) {
 							String item = scanner.nextLine();
-							boolean isProductexist = false;
+							boolean doesProductExist = false;
 							for (String key: keys) {
 
 								Product product = inventory.getInventoryMap().get(key);
 								String productSlot = product.getSlot();
 								if (productSlot.equals(item)) {
-									isProductexist = true;
+									doesProductExist = true;
 									String productType = product.getProductType();
 									BigDecimal price = product.getPrice();
-									BigDecimal bdAmt = BigDecimal.valueOf(Double.valueOf(amount));
+									BigDecimal bdAmt = BigDecimal.valueOf(Double.parseDouble(amount));
 									if (bdAmt.compareTo(price) >= 0) {
 										amount = bdAmt.subtract(price).toString();
 										switch(productType) {
@@ -123,7 +123,6 @@ public class VendingMachineCLI {
 												System.out.println("Munch Munch, Mmm-Good!");
 												break;
 											default:
-												;
 										}
 									product.decreaseQuantity();
 									} else {
@@ -132,7 +131,7 @@ public class VendingMachineCLI {
 								}
 
 							}
-							if (isProductexist == false) {
+							if (!doesProductExist) {
 								System.out.println("Invalid Code!");
 							}
 						}
