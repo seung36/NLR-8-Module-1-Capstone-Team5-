@@ -87,19 +87,22 @@ public class VendingMachineCLI {
 
 					} if (secondChoice.equals(SECOND_MENU_OPTION_SELECT_PRODUCT)) {
 						//menu.purchase();
+						//if (inventory.inventorySize() == 0) {
 						File file = new File("vendingmachine.csv");
 						try {
-							Scanner scanner = new Scanner(file);
-							inventory = new Inventory();
-							while (scanner.hasNextLine()) {
-								String line = scanner.nextLine();
-								String[] data = line.split("\\|");
-								Product product = new Product(data[0], data[1], Double.parseDouble(data[2]), data[3], 5);
+							if (inventory == null) {
+								Scanner scanner = new Scanner(file);
+								inventory = new Inventory();
+								while (scanner.hasNextLine()) {
+									String line = scanner.nextLine();
+									String[] data = line.split("\\|");
+									Product product = new Product(data[0], data[1], Double.parseDouble(data[2]), data[3], 5);
 
-								inventory.getInventoryMap().put(data[1], product);
+									inventory.getInventoryMap().put(data[1], product);
 
+								}
+								scanner.close();
 							}
-							scanner.close();
 							String[] keys = inventory.getInventoryMap().keySet().toArray(new String[0]);
 
 							int index = 0;
