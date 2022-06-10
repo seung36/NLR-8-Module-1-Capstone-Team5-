@@ -33,13 +33,29 @@ public class Financial {
         return funds;
     }
 
-    public void feedMoney(double money) {
-        total += money;
-        System.out.println("Feed Money");
-        String inputMoney = in.nextLine();
-        double funds = Double.parseDouble(inputMoney);
-        System.out.println("Current Money Provided: $" + "$%,.2d");
-        
-    }
+   public static String returnChange(String amt) {
+       int moneyFeed = (int) (Double.valueOf(amt) * 100);
+       int quarters = 0;
+       int nickels = 0;
+       int dimes = 0;
+       while (moneyFeed > 0) {
+           if (moneyFeed >= 25) {
+               quarters++;
+               moneyFeed -= 25;
+           } else if (moneyFeed >= 10) {
+               dimes++;
+               moneyFeed -= 10;
+           } else {
+               if (moneyFeed >= 5) {
+                   nickels++;
+                   moneyFeed -= 5;
+               }
+           }
+       }
+       return "Change return: " + quarters + " quarters, " + dimes + " dimes, " + nickels + " nickels.";
+       }
 
-}
+
+   }
+
+

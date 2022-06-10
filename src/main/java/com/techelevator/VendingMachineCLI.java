@@ -76,6 +76,9 @@ public class VendingMachineCLI {
 						if (scanner.hasNext()) {
 							Double prevAmt = Double.valueOf(amount);
 							amount = scanner.next();
+							//String pattern = "yyyy-MM-dd";
+							//SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+							//String date = simpleDateFormat.format(new Date());
 							Double currAmt = Double.valueOf(amount);
 							currAmt = prevAmt + currAmt;
 							amount = String.valueOf(currAmt);
@@ -84,17 +87,34 @@ public class VendingMachineCLI {
 
 					} if (secondChoice.equals(SECOND_MENU_OPTION_SELECT_PRODUCT)) {
 						//menu.purchase();
-						String[] keys = inventory.getInventoryMap().keySet().toArray(new String[0]);
+						File file = new File("vendingmachine.csv");
+						try {
+							Scanner scanner = new Scanner(file);
+							inventory = new Inventory();
+							while (scanner.hasNextLine()) {
+								String line = scanner.nextLine();
+								String[] data = line.split("\\|");
+								Product product = new Product(data[0], data[1], Double.parseDouble(data[2]), data[3], 5);
 
-						int index = 0;
-						for (Map.Entry<String, Product> mapr : inventory.getInventoryMap().entrySet()) {
-							Product pr = inventory.getInventoryMap().get(keys[index]);
-							//TODO fix decimals so 0 shows in the hundredths position
-							System.out.println(pr.getSlot() + " " + pr.getProductName() + " $" + pr.getPrice() + " Qty:" + (pr.getQuantity() == 0 ? "SOLD OUT" : pr.getQuantity()) );
-							index++;
+								inventory.getInventoryMap().put(data[1], product);
+
+							}
+							scanner.close();
+							String[] keys = inventory.getInventoryMap().keySet().toArray(new String[0]);
+
+							int index = 0;
+							for (Map.Entry<String, Product> map : inventory.getInventoryMap().entrySet()) {
+								Product pr = inventory.getInventoryMap().get(keys[index]);
+								//TODO fix decimals so 0 shows in the hundredths position
+								System.out.println(pr.getSlot() + " " + pr.getProductName() + " $" + pr.getPrice() + " Qty: " + (pr.getQuantity() == 0 ? "SOLD OUT" : pr.getQuantity()) );
+								index++;
+							}
+						} catch (FileNotFoundException e) {
+							System.out.println(e.getMessage());
 						}
 						System.out.print("Type the slot number to dispense the item: ");
 						Scanner scanner = new Scanner(System.in);
+						String[] keys = inventory.getInventoryMap().keySet().toArray(new String[0]);
 						if (scanner.hasNext()) {
 							String item = scanner.nextLine();
 							boolean doesProductExist = false;
@@ -136,10 +156,13 @@ public class VendingMachineCLI {
 							}
 						}
 
-					} /*else if (secondChoice.equals(SECOND_MENU_OPTION_FINISH_TRANSACTION)) {
-						menu.finish();
-						run();
-					} else if (secondChoice.equals(SECOND_MENU_OPTION_SALES_REPORT)) {
+					} else if (secondChoice.equals(SECOND_MENU_OPTION_FINISH_TRANSACTION)) {
+						//menu.finish();
+						//run();
+						System.out.println(Financial.returnChange(amount));
+						amount = "0.00";
+						break;
+					}/* else if (secondChoice.equals(SECOND_MENU_OPTION_SALES_REPORT)) {
 						menu.generateSalesReport
 					}*/
 				}

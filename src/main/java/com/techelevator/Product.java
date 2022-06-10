@@ -34,9 +34,10 @@ public class Product {
     public int getQuantity() {
         return quantity;
     }
-
+    //price to string, "5.3" indexOf(".") substring
     public BigDecimal getPrice() {
-        return price;
+
+        return price.setScale(2);
     }
 
     public void decreaseQuantity() {
