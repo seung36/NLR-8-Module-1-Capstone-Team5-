@@ -40,7 +40,7 @@
   <component name="RunManager">
     <configuration name="VendingMachineCLI" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.techelevator.VendingMachineCLI" />
-      <module name="m1-java-capstone-vending-machine" />
+      <module name="nlr-8-module-1-capstone-team-5" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="com.techelevator.*" />
