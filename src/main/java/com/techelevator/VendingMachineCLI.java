@@ -50,7 +50,7 @@ public class VendingMachineCLI {
 					inventory = new Inventory();
 					while (scanner.hasNextLine()) {
 						String line = scanner.nextLine();
-						String[] data = line.split("\\|");
+						String[] data = line.split("\\|");//{"A1", "Potato Crisps", "3.05", "Chip"}
 						Product product = new Product(data[0], data[1], Double.parseDouble(data[2]), data[3], 5);
 
 						inventory.getInventoryMap().put(data[1], product);
@@ -89,6 +89,7 @@ public class VendingMachineCLI {
 							//String date = simpleDateFormat.format(new Date());
 							Double currAmt = Double.valueOf(amount);
 							currAmt = prevAmt + currAmt;
+							System.out.println(Financial.log("FEED MONEY", "$" + amount + ": $" + currAmt));
 							amount = String.valueOf(currAmt);
 						}
 						//scanner.close();
@@ -140,6 +141,7 @@ public class VendingMachineCLI {
 									BigDecimal bdAmt = BigDecimal.valueOf(Double.parseDouble(amount));
 									if (bdAmt.compareTo(price) >= 0) {
 										amount = bdAmt.subtract(price).toString();
+										Financial.log(product.getProductName() + " " + product.getSlot(), bdAmt.toString() + " " + amount);
 										switch(productType) {
 											case "Chip":
 												System.out.println("Crunch Crunch, Crunch!");
