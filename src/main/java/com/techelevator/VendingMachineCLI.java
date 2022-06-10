@@ -180,7 +180,7 @@ public class VendingMachineCLI {
 							String filePath = date;
 							File salesReport = new File(filePath +"salesReport.txt");
 							try (PrintWriter writer = new PrintWriter(salesReport)) {
-								for (Map.Entry<String, Integer> entry : getInventoryMap().entryset()) {
+								for (Map.Entry<String, Integer> entry : Inventory.getInventoryMap().entryset()) {
 								String key = entry.getKey(data[1]);
 								String value = String.valueOf(entry.getValue(data[4]));
 								writer.print(key + "|" + value + "\n");
