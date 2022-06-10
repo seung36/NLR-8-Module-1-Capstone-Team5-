@@ -38,7 +38,7 @@ public class Financial {
         System.out.println("Feed Money");
         String inputMoney = in.nextLine();
         double funds = Double.parseDouble(inputMoney);
-        System.out.println("Current Money Provided: $%,.2d");
+        System.out.println("Current Money Provided: $" + "$%,.2d");
         
     }
 

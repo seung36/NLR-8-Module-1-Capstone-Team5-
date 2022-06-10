@@ -4,11 +4,11 @@ import java.math.BigDecimal;
 
 public class Product {
 
-    private String productName;
-    private String productType;
-    private String slot;
+    private final String productName;
+    private final String productType;
+    private final String slot;
     private int quantity;
-    private BigDecimal price;
+    private final BigDecimal price;
 
     // insert method
     public Product(String slot, String name, double price, String type, int quantity) {
@@ -39,19 +39,8 @@ public class Product {
         return price;
     }
 
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
-
     public void decreaseQuantity() {
         quantity--;
     }
 
-    public String soldOut() {
-        if (quantity == 0) {
-            return "SOLD OUT";
-        } else {
-            return Integer.toString(quantity);
-        }
     }
-}
