@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
@@ -90,7 +91,8 @@ public class VendingMachineCLI {
 							//String date = simpleDateFormat.format(new Date());
 							Double currAmt = Double.valueOf(amount);
 							currAmt = prevAmt + currAmt;
-							System.out.println(Financial.log("FEED MONEY", "$" + amount + ": $" + currAmt));
+							new BigDecimal(currAmt).setScale(2, RoundingMode.HALF_UP).doubleValue();
+							System.out.println(Financial.log("FEED MONEY", "$" + amount + " $" + currAmt));
 							amount = String.valueOf(currAmt);
 						}
 						//scanner.close();
@@ -189,7 +191,7 @@ public class VendingMachineCLI {
 								Product pr = inventory.getInventoryMap().get(keys[index]);
 								writer.print(pr.getProductName() + "|" + (5 - pr.getQuantity()) + "\n");
 							}
-							writer.print("\n" + "**TOTAL SALES** " + String.format("$", amount));
+							writer.print("\n" + "**TOTAL SALES** " + String.format("$" + amount));
 						} catch (IOException ex) {
 							System.out.println("Exception");
 						}
