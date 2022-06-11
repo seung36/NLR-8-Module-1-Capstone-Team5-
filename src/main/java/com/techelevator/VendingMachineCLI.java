@@ -194,8 +194,7 @@ public class VendingMachineCLI {
 
 							String[] keys = inventory.getInventoryMap().keySet().toArray(new String[0]);
 							int index = 0;
-							String filePath = date;
-							File salesReport = new File(filePath + "salesReport.txt");
+							File salesReport = new File("salesReport.txt");
 							try (PrintWriter writer = new PrintWriter(salesReport)) {
 								for (Map.Entry<String, Product> entry : inventory.getInventoryMap().entrySet()) {
 									Product pr = inventory.getInventoryMap().get(keys[index]);
@@ -203,7 +202,7 @@ public class VendingMachineCLI {
 								}
 								writer.print("\n" + "**TOTAL SALES** " + "$" + amount);
 							} catch (IOException ex) {
-								System.out.println("Exception");
+								System.out.println("Exception: " + ex.getMessage());
 							}
 							break;
 						}
