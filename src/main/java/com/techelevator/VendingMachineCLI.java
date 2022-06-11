@@ -97,7 +97,7 @@ public class VendingMachineCLI {
 							}
 							currAmt = prevAmt + currAmt;
 							new BigDecimal(currAmt).setScale(2, RoundingMode.HALF_UP).doubleValue();
-							System.out.println(Financial.log("FEED MONEY", "$" + amount + " $" + currAmt));
+
 							Financial.log("FEED MONEY", BigDecimal.valueOf(currAmt - prevAmt).setScale(2).toString(), BigDecimal.valueOf(currAmt).setScale(2).toString());
 							amount = String.valueOf(currAmt);
 						}
@@ -144,7 +144,7 @@ public class VendingMachineCLI {
 
 									Product product = inventory.getInventoryMap().get(key);
 									String productSlot = product.getSlot();
-									if (productSlot.equalsIgnoreCase(item)) {
+									if (productSlot.equalsIgnoreCase(item) && product.getQuantity() > 0) {
 										doesProductExist = true;
 										String productType = product.getProductType();
 										BigDecimal price = product.getPrice();
@@ -176,7 +176,7 @@ public class VendingMachineCLI {
 
 								}
 								if (!doesProductExist) {
-									System.out.println("Invalid Code!");
+									System.out.println("Invalid Code! or SOLD OUT");
 								}
 //								if(!inventory.isProductInStock) {
 //									System.out.println("SOLD OUT!");
