@@ -91,7 +91,7 @@ public class VendingMachineCLI {
 							try {
 								currAmt = (double) Integer.parseInt(amount);
 							} catch (Exception e) {
-								System.out.println("INVALID INPUT");
+								System.out.println(System.lineSeparator() + "*** " + amount + " is not a valid option ***" + System.lineSeparator());
 								amount = String.valueOf(prevAmt);
 								continue;
 							}
