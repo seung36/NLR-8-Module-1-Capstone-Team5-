@@ -29,7 +29,7 @@ public class VendingMachineCLI {
 	private String amount = "0.00";
 	Inventory inventory;
 
-	private Menu menu;
+	private final Menu menu;
 
 	public VendingMachineCLI(Menu menu) {
 		this.menu = menu;
@@ -41,7 +41,7 @@ public class VendingMachineCLI {
 
 	public void run() {
 		String choice;
-		while (true) {
+		do {
 			choice = (String) menu.getChoiceFromOptions(MAIN_MENU_OPTIONS);
 
 			if (choice.equals(MAIN_MENU_OPTION_DISPLAY_ITEMS)) {
@@ -64,7 +64,6 @@ public class VendingMachineCLI {
 					int index = 0;
 					for (Map.Entry<String, Product> map : inventory.getInventoryMap().entrySet()) {
 						Product pr = inventory.getInventoryMap().get(keys[index]);
-						//TODO fix decimals so 0 shows in the hundredths position
 						System.out.println(pr.getSlot() + " " + pr.getProductName() + " $" + pr.getPrice() + " Qty: " + (pr.getQuantity() == 0 ? "SOLD OUT" : pr.getQuantity()));
 						index++;
 					}
@@ -75,155 +74,143 @@ public class VendingMachineCLI {
 
 			} else if (choice.equals(MAIN_MENU_OPTION_PURCHASE)) {
 				// do purchase
+				label:
 				while (true) {
-					System.out.println(SECOND_MENU_OPTION_CURRENT_MONEY_PROVIDED + " $" + BigDecimal.valueOf(Double.valueOf(amount)).setScale(2));
+					System.out.println(SECOND_MENU_OPTION_CURRENT_MONEY_PROVIDED + " $" + BigDecimal.valueOf(Double.parseDouble(amount)).setScale(2));
 					String secondChoice = (String) menu.getChoiceFromOptions(SECOND_MENU_OPTIONS);
 
 					if (secondChoice.equals(SECOND_MENU_OPTION_FEED_MONEY)) {
-						//menu.feedmoney();
+
 						System.out.print("Type the amount of money you want to feed in WHOLE DOLLAR amounts: ");
 						Scanner scanner = new Scanner(System.in);
 						if (scanner.hasNext()) {
 							Double prevAmt = Double.valueOf(amount);
-							Double currAmt = 0.0;
+							Double currAmt;
 							amount = scanner.next();
-							//String pattern = "yyyy-MM-dd";
-							//SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
-							//String date = simpleDateFormat.format(new Date());
 
-							try {currAmt = Double.valueOf(Integer.valueOf(amount));
+							try {
+								currAmt = (double) Integer.parseInt(amount);
 							} catch (Exception e) {
 								System.out.println("INVALID INPUT");
 								amount = String.valueOf(prevAmt);
 								continue;
 							}
 							currAmt = prevAmt + currAmt;
-<<<<<<< HEAD
 							new BigDecimal(currAmt).setScale(2, RoundingMode.HALF_UP).doubleValue();
 							System.out.println(Financial.log("FEED MONEY", "$" + amount + " $" + currAmt));
-=======
-							Financial.log("FEED MONEY", BigDecimal.valueOf(currAmt-prevAmt).setScale(2).toString(), BigDecimal.valueOf(currAmt).setScale(2).toString());
->>>>>>> f635b91922ed1d7a33803bd1ba841462e0a15ad2
+							Financial.log("FEED MONEY", BigDecimal.valueOf(currAmt - prevAmt).setScale(2).toString(), BigDecimal.valueOf(currAmt).setScale(2).toString());
 							amount = String.valueOf(currAmt);
 						}
 						//scanner.close();
 
 					}
-					if (secondChoice.equals(SECOND_MENU_OPTION_SELECT_PRODUCT)) {
-						//menu.purchase();
-						//if (inventory.inventorySize() == 0) {
-						File file = new File("vendingmachine.csv");
-						try {
-							if (inventory == null) {
-								Scanner scanner = new Scanner(file);
-								inventory = new Inventory();
-								while (scanner.hasNextLine()) {
-									String line = scanner.nextLine();
-									String[] data = line.split("\\|");
-									Product product = new Product(data[0], data[1], Double.parseDouble(data[2]), data[3], 5);
+					switch (secondChoice) {
+						case SECOND_MENU_OPTION_SELECT_PRODUCT: {
+							//menu.purchase();
+							//if (inventory.inventorySize() == 0) {
+							File file = new File("vendingmachine.csv");
+							try {
+								if (inventory == null) {
+									Scanner scanner = new Scanner(file);
+									inventory = new Inventory();
+									while (scanner.hasNextLine()) {
+										String line = scanner.nextLine();
+										String[] data = line.split("\\|");
+										Product product = new Product(data[0], data[1], Double.parseDouble(data[2]), data[3], 5);
 
-									inventory.getInventoryMap().put(data[1], product);
-
-								}
-								scanner.close();
-							}
-							String[] keys = inventory.getInventoryMap().keySet().toArray(new String[0]);
-
-							int index = 0;
-							for (Map.Entry<String, Product> map : inventory.getInventoryMap().entrySet()) {
-								Product pr = inventory.getInventoryMap().get(keys[index]);
-								//TODO fix decimals so 0 shows in the hundredths position
-								System.out.println(pr.getSlot() + " " + pr.getProductName() + " $" + pr.getPrice() + " Qty: " + (pr.getQuantity() == 0 ? "SOLD OUT" : pr.getQuantity()));
-								index++;
-							}
-						} catch (FileNotFoundException e) {
-							System.out.println(e.getMessage());
-						}
-						System.out.print("Type the slot number to dispense the item: ");
-						Scanner scanner = new Scanner(System.in);
-						String[] keys = inventory.getInventoryMap().keySet().toArray(new String[0]);
-						if (scanner.hasNext()) {
-							String item = scanner.nextLine();
-							boolean doesProductExist = false;
-							for (String key : keys) {
-
-								Product product = inventory.getInventoryMap().get(key);
-								String productSlot = product.getSlot();
-								if (productSlot.equalsIgnoreCase(item)) {
-									doesProductExist = true;
-									String productType = product.getProductType();
-									BigDecimal price = product.getPrice();
-									BigDecimal bdAmt = BigDecimal.valueOf(Double.parseDouble(amount));
-									if (bdAmt.compareTo(price) >= 0) {
-										amount = bdAmt.subtract(price).toString();
-
-										Financial.log(product.getProductName() + " " + product.getSlot(), bdAmt.toString() + " " + amount);
-										//Financial.log(product , price.setScale(2).toString(), amount);
-										switch (productType) {
-
-											case "Chip":
-												System.out.println("Crunch Crunch, Crunch!");
-												break;
-											case "Gum":
-												System.out.println("Chew Chew, Pop!");
-												break;
-											case "Drink":
-												System.out.println("Cheers Glug, Glug!");
-												break;
-											case "Candy":
-												System.out.println("Munch Munch, Mmm-Good!");
-												break;
-											default:
-										}
-										product.decreaseQuantity();
-									} else {
+										inventory.getInventoryMap().put(data[1], product);
 
 									}
+									scanner.close();
 								}
+								String[] keys = inventory.getInventoryMap().keySet().toArray(new String[0]);
 
+								int index = 0;
+								for (Map.Entry<String, Product> map : inventory.getInventoryMap().entrySet()) {
+									Product pr = inventory.getInventoryMap().get(keys[index]);
+									System.out.println(pr.getSlot() + " " + pr.getProductName() + " $" + pr.getPrice() + " Qty: " + (pr.getQuantity() == 0 ? "SOLD OUT" : pr.getQuantity()));
+									index++;
+								}
+							} catch (FileNotFoundException e) {
+								System.out.println(e.getMessage());
 							}
-							if (!doesProductExist) {
-								System.out.println("Invalid Code!");
+							System.out.print("Type the slot number to dispense the item: ");
+							Scanner scanner = new Scanner(System.in);
+							String[] keys = inventory.getInventoryMap().keySet().toArray(new String[0]);
+							if (scanner.hasNext()) {
+								String item = scanner.nextLine();
+								boolean doesProductExist = false;
+								for (String key : keys) {
+
+									Product product = inventory.getInventoryMap().get(key);
+									String productSlot = product.getSlot();
+									if (productSlot.equalsIgnoreCase(item)) {
+										doesProductExist = true;
+										String productType = product.getProductType();
+										BigDecimal price = product.getPrice();
+										BigDecimal bdAmt = BigDecimal.valueOf(Double.parseDouble(amount));
+										if (bdAmt.compareTo(price) >= 0) {
+											amount = bdAmt.subtract(price).toString();
+
+											Financial.log(product.getProductName() + " " + product.getSlot(), bdAmt + " " + amount);
+											//Financial.log(product , price.setScale(2).toString(), amount);
+											switch (productType) {
+
+												case "Chip":
+													System.out.println("Crunch Crunch, Crunch!");
+													break;
+												case "Gum":
+													System.out.println("Chew Chew, Pop!");
+													break;
+												case "Drink":
+													System.out.println("Cheers Glug, Glug!");
+													break;
+												case "Candy":
+													System.out.println("Munch Munch, Mmm-Good!");
+													break;
+												default:
+											}
+											product.decreaseQuantity();
+										}
+									}
+
+								}
+								if (!doesProductExist) {
+									System.out.println("Invalid Code!");
+								}
 							}
+
+							break;
 						}
+						case SECOND_MENU_OPTION_FINISH_TRANSACTION:
 
-					} else if (secondChoice.equals(SECOND_MENU_OPTION_FINISH_TRANSACTION)) {
-						//menu.finish();
-						//run();
-						System.out.println(Financial.returnChange(amount));
-						Financial.log("GIVE CHANGE", String.valueOf(BigDecimal.valueOf(Double.valueOf(amount)).setScale(2)), "0.00");
+							System.out.println(Financial.returnChange(amount));
+							Financial.log("GIVE CHANGE", String.valueOf(BigDecimal.valueOf(Double.parseDouble(amount)).setScale(2)), "0.00");
 
-						amount = "0.00";
-						break;
+							amount = "0.00";
+							break label;
 
-					} else if (secondChoice.equals(SECOND_MENU_OPTION_SALES_REPORT)) {
+						case SECOND_MENU_OPTION_SALES_REPORT: {
 
-						String[] keys = inventory.getInventoryMap().keySet().toArray(new String[0]);
-						int index = 0;
-						String filePath = date;
-						File salesReport = new File(filePath + "salesReport.txt");
-						try (PrintWriter writer = new PrintWriter(salesReport)) {
-							for (Map.Entry<String, Product> entry : inventory.getInventoryMap().entrySet()) {
-								Product pr = inventory.getInventoryMap().get(keys[index]);
-								writer.print(pr.getProductName() + "|" + (5 - pr.getQuantity()) + "\n");
+							String[] keys = inventory.getInventoryMap().keySet().toArray(new String[0]);
+							int index = 0;
+							String filePath = date;
+							File salesReport = new File(filePath + "salesReport.txt");
+							try (PrintWriter writer = new PrintWriter(salesReport)) {
+								for (Map.Entry<String, Product> entry : inventory.getInventoryMap().entrySet()) {
+									Product pr = inventory.getInventoryMap().get(keys[index]);
+									writer.print(pr.getProductName() + "|" + (5 - pr.getQuantity()) + "\n");
+								}
+								writer.print("\n" + "**TOTAL SALES** " + "$" + amount);
+							} catch (IOException ex) {
+								System.out.println("Exception");
 							}
-							writer.print("\n" + "**TOTAL SALES** " + String.format("$" + amount));
-						} catch (IOException ex) {
-							System.out.println("Exception");
+							break;
 						}
 					}
-
 				}
 			}
-
-			if (choice.equals(MAIN_MENU_OPTION_EXIT)) {
-				break;
-			}
-
-			//else if (choice.equals(MAIN_MENU_OPTION_EXIT)) ;
-			//System.exit(0);
-
-		}
+		} while (!choice.equals(MAIN_MENU_OPTION_EXIT));
 
 	}
 

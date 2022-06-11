@@ -7,14 +7,12 @@ import java.io.PrintWriter;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Scanner;
 
 public class Financial {
-    private double money = 0;
+    private final double money;
     private double total = 0;
-    private Scanner in;
     private static String pattern = "MM-dd-yyyy hh:mm:ss a";
-    private static File file;
+    private static final File file;
     static {
 
         file = new File("Log.txt");
@@ -33,8 +31,7 @@ public class Financial {
     }
 
     public BigDecimal convertBD(double money) {
-        BigDecimal bd = new BigDecimal(money);
-        return bd;
+        return new BigDecimal(money);
     }
 
     public double amountDeposited() {
@@ -45,12 +42,11 @@ public class Financial {
     }
 
     public double totalMoney() {
-        double funds = money + total;
-        return funds;
+        return money + total;
     }
 
    public static String returnChange(String amt) {
-       int moneyFeed = (int) (Double.valueOf(amt) * 100);
+       int moneyFeed = (int) (Double.parseDouble(amt) * 100);
        int quarters = 0;
        int nickels = 0;
        int dimes = 0;
@@ -68,14 +64,15 @@ public class Financial {
                }
            }
        }
-       return "Change return: " + quarters + " quarters, " + dimes + " dimes, " + nickels + " nickels.";
+       return "Change returned: " + quarters + " quarters, " + dimes + " dimes, " + nickels + " nickels";
        }
 
-    public static void log(String event, String moneyAmt) {
+    public static String log(String event, String moneyAmt) {
         String date = formatTheDate(pattern);
         String str = date + " " + event + ": " + moneyAmt;
         appendToFile(file, str);
         //return str;
+        return date;
     }
     public static void log(Product product, String moneyAmt, String balance) {
         String date = formatTheDate(pattern);
@@ -96,10 +93,10 @@ public class Financial {
     }
 
     public static void appendToFile(File newFile, String message){
-        boolean append = newFile.exists() ? true : false;
+        boolean append = newFile.exists();
         try (PrintWriter writer =
                      new PrintWriter(new FileOutputStream(newFile, append))) {
-            writer.append(message + "\n");
+            writer.append(message).append("\n");
         } catch(IOException e) {
             System.out.println("Exception: " + e.getMessage());
         }

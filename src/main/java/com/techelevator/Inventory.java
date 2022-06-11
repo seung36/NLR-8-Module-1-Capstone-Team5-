@@ -5,7 +5,7 @@ import java.util.Map;
 
 public class Inventory {
 
-    private Map<String, Product> inventoryMap;
+    private final Map<String, Product> inventoryMap;
 
     public Inventory() {
         this.inventoryMap = new HashMap<>();
@@ -25,13 +25,10 @@ public class Inventory {
 
     public Product searchProductInfo(String inventoryStats) {
         String[] attributes = inventoryStats.split("\\|");
-        Double doublePrice = Double.parseDouble(attributes[2]);
+        double doublePrice = Double.parseDouble(attributes[2]);
 
-        double price = doublePrice;
-
-        return new Product(attributes[0], attributes[1], price, attributes[3], 5);
+        return new Product(attributes[0], attributes[1], doublePrice, attributes[3], 5);
     }
-
 
     public Map<String, Product> getInventoryMap() {
         return inventoryMap;
