@@ -39,7 +39,7 @@ public class VendingMachineCLI {
 				File file = new File("vendingmachine.csv");
 				try {
 					Scanner scanner = new Scanner(file);
-					inventory = new Inventory();
+					inventory = ((inventory == null) ? new Inventory() : inventory);
 					while (scanner.hasNextLine()) {
 						String line = scanner.nextLine();
 						String[] data = line.split("\\|");//{"A1", "Potato Crisps", "3.05", "Chip"}
@@ -66,22 +66,29 @@ public class VendingMachineCLI {
 			} else if (choice.equals(MAIN_MENU_OPTION_PURCHASE)) {
 				// do purchase
 				while (true) {
-					System.out.println(SECOND_MENU_OPTION_CURRENT_MONEY_PROVIDED + " $" + amount);
+					System.out.println(SECOND_MENU_OPTION_CURRENT_MONEY_PROVIDED + " $" + BigDecimal.valueOf(Double.valueOf(amount)).setScale(2));
 					String secondChoice = (String) menu.getChoiceFromOptions(SECOND_MENU_OPTIONS);
 
 					if (secondChoice.equals(SECOND_MENU_OPTION_FEED_MONEY)) {
 						//menu.feedmoney();
-						System.out.print("Type the amount of money you want to feed in whole dollar amounts: ");
+						System.out.print("Type the amount of money you want to feed in WHOLE DOLLAR amounts: ");
 						Scanner scanner = new Scanner(System.in);
 						if (scanner.hasNext()) {
 							Double prevAmt = Double.valueOf(amount);
+							Double currAmt = 0.0;
 							amount = scanner.next();
 							//String pattern = "yyyy-MM-dd";
 							//SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
 							//String date = simpleDateFormat.format(new Date());
-							Double currAmt = Double.valueOf(amount);
+
+							try {currAmt = Double.valueOf(Integer.valueOf(amount));
+							} catch (Exception e) {
+								System.out.println("INVALID INPUT");
+								amount = String.valueOf(prevAmt);
+								continue;
+							}
 							currAmt = prevAmt + currAmt;
-							System.out.println(Financial.log("FEED MONEY", "$" + amount + ": $" + currAmt));
+							Financial.log("FEED MONEY", BigDecimal.valueOf(currAmt-prevAmt).setScale(2).toString(), BigDecimal.valueOf(currAmt).setScale(2).toString());
 							amount = String.valueOf(currAmt);
 						}
 						//scanner.close();
@@ -126,14 +133,14 @@ public class VendingMachineCLI {
 
 								Product product = inventory.getInventoryMap().get(key);
 								String productSlot = product.getSlot();
-								if (productSlot.equals(item)) {
+								if (productSlot.equalsIgnoreCase(item)) {
 									doesProductExist = true;
 									String productType = product.getProductType();
 									BigDecimal price = product.getPrice();
 									BigDecimal bdAmt = BigDecimal.valueOf(Double.parseDouble(amount));
 									if (bdAmt.compareTo(price) >= 0) {
 										amount = bdAmt.subtract(price).toString();
-										Financial.log(product.getProductName() + " " + product.getSlot(), bdAmt.toString() + " " + amount);
+										Financial.log(product , price.setScale(2).toString(), amount);
 										switch(productType) {
 											case "Chip":
 												System.out.println("Crunch Crunch, Crunch!");
@@ -165,6 +172,8 @@ public class VendingMachineCLI {
 						//menu.finish();
 						//run();
 						System.out.println(Financial.returnChange(amount));
+						Financial.log("GIVE CHANGE", String.valueOf(BigDecimal.valueOf(Double.valueOf(amount)).setScale(2)), "0.00");
+
 						amount = "0.00";
 						break;
 					}/* else if (secondChoice.equals(SECOND_MENU_OPTION_SALES_REPORT)) {
@@ -172,7 +181,9 @@ public class VendingMachineCLI {
 					}*/
 				}
 			}
-			else if (choice.equals(MAIN_MENU_OPTION_EXIT));
+			if (choice.equals(MAIN_MENU_OPTION_EXIT)) {
+				break;
+			}
 		}
 	}
 
