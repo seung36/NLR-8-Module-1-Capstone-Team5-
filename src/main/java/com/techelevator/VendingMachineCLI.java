@@ -3,7 +3,11 @@ package com.techelevator;
 import com.techelevator.view.Menu;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -30,9 +34,14 @@ public class VendingMachineCLI {
 		this.menu = menu;
 	}
 
+	String pattern = "yyyy-MM-dd HH:mm:ss";
+	SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+	String date = simpleDateFormat.format(new Date());
+
 	public void run() {
+		String choice;
 		while (true) {
-			String choice = (String) menu.getChoiceFromOptions(MAIN_MENU_OPTIONS);
+			choice = (String) menu.getChoiceFromOptions(MAIN_MENU_OPTIONS);
 
 			if (choice.equals(MAIN_MENU_OPTION_DISPLAY_ITEMS)) {
 				// display vending machine items
@@ -55,7 +64,7 @@ public class VendingMachineCLI {
 					for (Map.Entry<String, Product> map : inventory.getInventoryMap().entrySet()) {
 						Product pr = inventory.getInventoryMap().get(keys[index]);
 						//TODO fix decimals so 0 shows in the hundredths position
-						System.out.println(pr.getSlot() + " " + pr.getProductName() + " $" + pr.getPrice() + " Qty: " + (pr.getQuantity() == 0 ? "SOLD OUT" : pr.getQuantity()) );
+						System.out.println(pr.getSlot() + " " + pr.getProductName() + " $" + pr.getPrice() + " Qty: " + (pr.getQuantity() == 0 ? "SOLD OUT" : pr.getQuantity()));
 						index++;
 					}
 				} catch (FileNotFoundException e) {
@@ -93,7 +102,8 @@ public class VendingMachineCLI {
 						}
 						//scanner.close();
 
-					} if (secondChoice.equals(SECOND_MENU_OPTION_SELECT_PRODUCT)) {
+					}
+					if (secondChoice.equals(SECOND_MENU_OPTION_SELECT_PRODUCT)) {
 						//menu.purchase();
 						//if (inventory.inventorySize() == 0) {
 						File file = new File("vendingmachine.csv");
@@ -117,7 +127,7 @@ public class VendingMachineCLI {
 							for (Map.Entry<String, Product> map : inventory.getInventoryMap().entrySet()) {
 								Product pr = inventory.getInventoryMap().get(keys[index]);
 								//TODO fix decimals so 0 shows in the hundredths position
-								System.out.println(pr.getSlot() + " " + pr.getProductName() + " $" + pr.getPrice() + " Qty: " + (pr.getQuantity() == 0 ? "SOLD OUT" : pr.getQuantity()) );
+								System.out.println(pr.getSlot() + " " + pr.getProductName() + " $" + pr.getPrice() + " Qty: " + (pr.getQuantity() == 0 ? "SOLD OUT" : pr.getQuantity()));
 								index++;
 							}
 						} catch (FileNotFoundException e) {
@@ -129,7 +139,7 @@ public class VendingMachineCLI {
 						if (scanner.hasNext()) {
 							String item = scanner.nextLine();
 							boolean doesProductExist = false;
-							for (String key: keys) {
+							for (String key : keys) {
 
 								Product product = inventory.getInventoryMap().get(key);
 								String productSlot = product.getSlot();
@@ -140,8 +150,11 @@ public class VendingMachineCLI {
 									BigDecimal bdAmt = BigDecimal.valueOf(Double.parseDouble(amount));
 									if (bdAmt.compareTo(price) >= 0) {
 										amount = bdAmt.subtract(price).toString();
+
+										//Financial.log(product.getProductName() + " " + product.getSlot(), bdAmt.toString() + " " + amount);
 										Financial.log(product , price.setScale(2).toString(), amount);
-										switch(productType) {
+										switch (productType) {
+
 											case "Chip":
 												System.out.println("Crunch Crunch, Crunch!");
 												break;
@@ -156,7 +169,7 @@ public class VendingMachineCLI {
 												break;
 											default:
 										}
-									product.decreaseQuantity();
+										product.decreaseQuantity();
 									} else {
 
 									}
@@ -176,16 +189,38 @@ public class VendingMachineCLI {
 
 						amount = "0.00";
 						break;
-					}/* else if (secondChoice.equals(SECOND_MENU_OPTION_SALES_REPORT)) {
-						menu.generateSalesReport
-					}*/
+
+					} else if (secondChoice.equals(SECOND_MENU_OPTION_SALES_REPORT)) {
+
+						String[] keys = inventory.getInventoryMap().keySet().toArray(new String[0]);
+						int index = 0;
+						String filePath = date;
+						File salesReport = new File(filePath + "salesReport.txt");
+						try (PrintWriter writer = new PrintWriter(salesReport)) {
+							for (Map.Entry<String, Product> entry : inventory.getInventoryMap().entrySet()) {
+								Product pr = inventory.getInventoryMap().get(keys[index]);
+								writer.print(pr.getProductName() + "|" + (5 - pr.getQuantity()) + "\n");
+							}
+							writer.print("\n" + "**TOTAL SALES** " + String.format("$", amount));
+						} catch (IOException ex) {
+							System.out.println("Exception");
+						}
+					}
+
 				}
 			}
+
 			if (choice.equals(MAIN_MENU_OPTION_EXIT)) {
 				break;
 			}
+
+			//else if (choice.equals(MAIN_MENU_OPTION_EXIT)) ;
+			//System.exit(0);
+
 		}
+
 	}
+
 
 	public static void main(String[] args) {
 		Menu menu = new Menu(System.in, System.out);
