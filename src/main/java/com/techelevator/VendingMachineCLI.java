@@ -178,6 +178,9 @@ public class VendingMachineCLI {
 								if (!doesProductExist) {
 									System.out.println("Invalid Code!");
 								}
+								if(!inventory.isProductInStock) {
+									System.out.println("SOLD OUT!");
+								}
 							}
 
 							break;

@@ -6,6 +6,7 @@ import java.util.Map;
 public class Inventory {
 
     private final Map<String, Product> inventoryMap;
+    public boolean isProductInStock;
 
     public Inventory() {
         this.inventoryMap = new HashMap<>();
@@ -32,5 +33,10 @@ public class Inventory {
 
     public Map<String, Product> getInventoryMap() {
         return inventoryMap;
+    }
+
+    public boolean isProductInStock(String slotKey) {
+        Product selectedProduct = inventoryMap.get(slotKey);
+        return selectedProduct.getQuantity() > 0;
     }
 }
