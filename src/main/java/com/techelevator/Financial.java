@@ -1,5 +1,9 @@
 package com.techelevator;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -9,6 +13,16 @@ public class Financial {
     private double money = 0;
     private double total = 0;
     private Scanner in;
+    private static String pattern = "MM-dd-yyyy hh:mm:ss a";
+    private static File file;
+    static {
+
+        file = new File("Log.txt");
+    }
+
+    public static void setPattern(String pattern) {
+        Financial.pattern = pattern;
+    }
 
     public void setTotal(double total) {
         this.total = total;
@@ -57,26 +71,41 @@ public class Financial {
        return "Change return: " + quarters + " quarters, " + dimes + " dimes, " + nickels + " nickels.";
        }
 
-    public static String log(String event, String moneyAmt) {
-        String pattern = "MM-dd-yyyy hh:mm:ss a";
+    public static void log(String event, String moneyAmt) {
         String date = formatTheDate(pattern);
-        return date + " " + event + ": " + moneyAmt;
+        String str = date + " " + event + ": " + moneyAmt;
+        appendToFile(file, str);
+        //return str;
     }
-    public static String log(Product product, String moneyAmt, String balance) {
-        String pattern = "MM-dd-yyyy hh:mm:ss a";
+    public static void log(Product product, String moneyAmt, String balance) {
         String date = formatTheDate(pattern);
-        return date + " " + product.getProductName() + " " + product.getSlot() + " $" + moneyAmt + " $" + balance;
+        String str = date + " " + product.getProductName() + " " + product.getSlot() + " $" + moneyAmt + " $" + balance;
+        appendToFile(file, str);
+        //return str;
     }
-    public static String log(String event, String moneyAmt, String balance) {
-        String pattern = "MM-dd-yyyy hh:mm:ss a";
+    public static void log(String event, String moneyAmt, String balance) {
         String date = formatTheDate(pattern);
-        return date + " " + event + ": " + moneyAmt + " " +balance;
+        String str = date + " " + event + ": " + "$" + moneyAmt + " $"+balance;
+        appendToFile(file, str);
+        //return str;
     }
 
     public static String formatTheDate(String pattern) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
         return simpleDateFormat.format(new Date());
     }
+
+    public static void appendToFile(File newFile, String message){
+        boolean append = newFile.exists() ? true : false;
+        try (PrintWriter writer =
+                     new PrintWriter(new FileOutputStream(newFile, append))) {
+            writer.append(message + "\n");
+        } catch(IOException e) {
+            System.out.println("Exception: " + e.getMessage());
+        }
+
+    }
+
 }
 
 
