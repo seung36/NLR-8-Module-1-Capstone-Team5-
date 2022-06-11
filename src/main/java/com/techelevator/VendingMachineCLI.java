@@ -151,8 +151,8 @@ public class VendingMachineCLI {
 									if (bdAmt.compareTo(price) >= 0) {
 										amount = bdAmt.subtract(price).toString();
 
-										//Financial.log(product.getProductName() + " " + product.getSlot(), bdAmt.toString() + " " + amount);
-										Financial.log(product , price.setScale(2).toString(), amount);
+										Financial.log(product.getProductName() + " " + product.getSlot(), bdAmt.toString() + " " + amount);
+										//Financial.log(product , price.setScale(2).toString(), amount);
 										switch (productType) {
 
 											case "Chip":
