@@ -76,12 +76,12 @@ public class VendingMachineCLI {
 				// do purchase
 				label:
 				while (true) {
-					System.out.println(SECOND_MENU_OPTION_CURRENT_MONEY_PROVIDED + " $" + BigDecimal.valueOf(Double.parseDouble(amount)).setScale(2));
+					System.out.println(System.lineSeparator() + SECOND_MENU_OPTION_CURRENT_MONEY_PROVIDED + " $" + BigDecimal.valueOf(Double.parseDouble(amount)).setScale(2));
 					String secondChoice = (String) menu.getChoiceFromOptions(SECOND_MENU_OPTIONS);
 
 					if (secondChoice.equals(SECOND_MENU_OPTION_FEED_MONEY)) {
 
-						System.out.print("Type the amount of money you want to feed in WHOLE DOLLAR amounts: ");
+						System.out.print(System.lineSeparator() + "Type the amount of money you want to feed in WHOLE DOLLAR amounts: ");
 						Scanner scanner = new Scanner(System.in);
 						if (scanner.hasNext()) {
 							Double prevAmt = Double.valueOf(amount);
@@ -128,13 +128,13 @@ public class VendingMachineCLI {
 								int index = 0;
 								for (Map.Entry<String, Product> map : inventory.getInventoryMap().entrySet()) {
 									Product pr = inventory.getInventoryMap().get(keys[index]);
-									System.out.println(pr.getSlot() + " " + pr.getProductName() + " $" + pr.getPrice() + " Qty: " + (pr.getQuantity() == 0 ? "SOLD OUT" : pr.getQuantity()));
+									System.out.println(System.lineSeparator() + pr.getSlot() + " " + pr.getProductName() + " $" + pr.getPrice() + " Qty: " + (pr.getQuantity() == 0 ? "SOLD OUT" : pr.getQuantity()));
 									index++;
 								}
 							} catch (FileNotFoundException e) {
 								System.out.println(e.getMessage());
 							}
-							System.out.print("Type the slot number to dispense the item: ");
+							System.out.print(System.lineSeparator() + "Type the slot number to dispense the item: ");
 							Scanner scanner = new Scanner(System.in);
 							String[] keys = inventory.getInventoryMap().keySet().toArray(new String[0]);
 							if (scanner.hasNext()) {
@@ -178,9 +178,9 @@ public class VendingMachineCLI {
 								if (!doesProductExist) {
 									System.out.println("Invalid Code!");
 								}
-								if(!inventory.isProductInStock) {
-									System.out.println("SOLD OUT!");
-								}
+//								if(!inventory.isProductInStock) {
+//									System.out.println("SOLD OUT!");
+//								}
 							}
 
 							break;
