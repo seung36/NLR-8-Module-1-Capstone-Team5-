@@ -64,7 +64,7 @@ public class VendingMachineCLI {
 					int index = 0;
 					for (Map.Entry<String, Product> map : inventory.getInventoryMap().entrySet()) {
 						Product pr = inventory.getInventoryMap().get(keys[index]);
-						System.out.println(pr.getSlot() + " " + pr.getProductName() + " $" + pr.getPrice() + " Qty: " + (pr.getQuantity() == 0 ? "SOLD OUT" : pr.getQuantity()));
+						System.out.println("\n" + pr.getSlot() + " " + pr.getProductName() + " $" + pr.getPrice() + " Qty: " + (pr.getQuantity() == 0 ? "SOLD OUT" : pr.getQuantity()));
 						index++;
 					}
 				} catch (FileNotFoundException e) {
@@ -176,7 +176,7 @@ public class VendingMachineCLI {
 
 								}
 								if (!doesProductExist) {
-									System.out.println("Invalid Code! or SOLD OUT");
+									System.out.println("Invalid Code or SOLD OUT");
 								}
 //								if(!inventory.isProductInStock) {
 //									System.out.println("SOLD OUT!");
