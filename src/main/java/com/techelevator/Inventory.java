@@ -1,5 +1,6 @@
 package com.techelevator;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -9,7 +10,7 @@ public class Inventory {
     public boolean isProductInStock;
 
     public Inventory() {
-        this.inventoryMap = new TreeMap<>();
+        this.inventoryMap = new LinkedHashMap<>();
     }
     // Should this be by slot or name?
     public Product findProductSlot(String slot) {
