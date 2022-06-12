@@ -34,6 +34,7 @@ public class Product {
     public int getQuantity() {
         return quantity;
     }
+
     //price to string, "5.3" indexOf(".") substring
     public BigDecimal getPrice() {
 
@@ -44,4 +45,29 @@ public class Product {
         quantity--;
     }
 
+
+    public static String messageProductType(Product product) {
+        String str = "";
+        switch (product.productType) {
+
+            case "Chip":
+                str = "Crunch Crunch, Crunch!";
+                System.out.println(str);
+                break;
+            case "Gum":
+                str = "Chew Chew, Pop!";
+                System.out.println(str);
+                break;
+            case "Drink":
+                str = "Cheers Glug, Glug!";
+                System.out.println(str);
+                break;
+            case "Candy":
+                str = "Munch Munch, Mmm-Good!";
+                System.out.println(str);
+                break;
+            default:
+        }
+        return str;
     }
+}
