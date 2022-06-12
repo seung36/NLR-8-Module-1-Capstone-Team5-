@@ -64,7 +64,7 @@ public class VendingMachineCLI {
 					int index = 0;
 					for (Map.Entry<String, Product> map : inventory.getInventoryMap().entrySet()) {
 						Product pr = inventory.getInventoryMap().get(keys[index]);
-						System.out.println("\n" + pr.getSlot() + " " + pr.getProductName() + " $" + pr.getPrice() + " Qty: " + (pr.getQuantity() == 0 ? "SOLD OUT" : pr.getQuantity()));
+						System.out.println(pr.getSlot() + " " + pr.getProductName() + " $" + pr.getPrice() + " Qty: " + (pr.getQuantity() == 0 ? "SOLD OUT" : pr.getQuantity()));
 						index++;
 					}
 				} catch (FileNotFoundException e) {
@@ -197,13 +197,20 @@ public class VendingMachineCLI {
 
 							String[] keys = inventory.getInventoryMap().keySet().toArray(new String[0]);
 							int index = 0;
+							BigDecimal sum = BigDecimal.valueOf(0);
 							File salesReport = new File("salesReport.txt");
 							try (PrintWriter writer = new PrintWriter(salesReport)) {
 								for (Map.Entry<String, Product> entry : inventory.getInventoryMap().entrySet()) {
-									Product pr = inventory.getInventoryMap().get(keys[index]);
+									Product pr = entry.getValue();
 									writer.print(pr.getProductName() + "|" + (5 - pr.getQuantity()) + "\n");
+									int quantitySold = 5 - pr.getQuantity();
+									BigDecimal price = pr.getPrice();
+									BigDecimal dollarAmount = price.multiply(BigDecimal.valueOf(quantitySold));
+									sum.add(dollarAmount);
+									BigDecimal newTotal = sum.add(dollarAmount);
+									sum = new BigDecimal(String.valueOf(newTotal));
 								}
-								writer.print("\n" + "**TOTAL SALES** " + "$" + amount);
+								writer.print("\n" + "**TOTAL SALES** " + "$" + (sum));
 							} catch (IOException ex) {
 								System.out.println("Exception: " + ex.getMessage());
 							}

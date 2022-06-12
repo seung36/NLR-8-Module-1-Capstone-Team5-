@@ -9,8 +9,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Financial {
-    private final double money;
-    private double total = 0;
+    private static double money = 0;
+    private static double total = 0;
     private static String pattern = "MM-dd-yyyy hh:mm:ss a";
     private static final File file;
     static {
@@ -41,7 +41,7 @@ public class Financial {
         return total;
     }
 
-    public double totalMoney() {
+    public static double totalMoney(String amount) {
         return money + total;
     }
 
@@ -82,7 +82,7 @@ public class Financial {
     }
     public static void log(String event, String moneyAmt, String balance) {
         String date = formatTheDate(pattern);
-        String str = date + " " + event + ": " + "$" + moneyAmt + " $"+balance;
+        String str = date + " " + event + ": " + "$" + moneyAmt + " $" + balance;
         appendToFile(file, str);
         //return str;
     }
